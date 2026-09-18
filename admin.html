@@ -697,24 +697,53 @@
         async function fetchClients() {
             const tbody = document.getElementById('clients-table-body');
             if (!tbody) return;
+
+            let dbClients = [];
             try {
                 const res = await fetch('api/admin.php?action=get_clients');
                 const result = await res.json();
-                if (result.success && Array.isArray(result.data) && result.data.length > 0) {
-                    tbody.innerHTML = result.data.map(c => `
-                        <tr>
-                            <td>#${c.id}</td>
-                            <td><strong>${c.full_name}</strong></td>
-                            <td>${c.email}</td>
-                            <td>${c.phone || 'N/A'}</td>
-                            <td>${c.address || 'N/A'}</td>
-                            <td>${new Date(c.created_at).toLocaleDateString()}</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No registered clients yet.</td></tr>`;
+                if (result.success && Array.isArray(result.data)) {
+                    dbClients = result.data;
                 }
             } catch(e){}
+
+            // Merge with LocalStorage users for client sync & static hosting
+            const localUsers = JSON.parse(localStorage.getItem('nf_users') || '[]');
+            const emailMap = new Map();
+
+            dbClients.forEach(c => emailMap.set(c.email.toLowerCase(), c));
+            localUsers.forEach(u => {
+                if (u && u.email && !emailMap.has(u.email.toLowerCase())) {
+                    emailMap.set(u.email.toLowerCase(), {
+                        id: u.id || 'loc-' + Math.floor(Math.random() * 1000),
+                        full_name: u.full_name,
+                        email: u.email,
+                        phone: u.phone || 'N/A',
+                        address: u.address || 'N/A',
+                        created_at: u.created_at || new Date().toISOString()
+                    });
+                }
+            });
+
+            const allClients = Array.from(emailMap.values());
+
+            const statElem = document.getElementById('stat-clients');
+            if (statElem) statElem.textContent = allClients.length;
+
+            if (allClients.length > 0) {
+                tbody.innerHTML = allClients.map(c => `
+                    <tr>
+                        <td>#${c.id}</td>
+                        <td><strong>${c.full_name}</strong></td>
+                        <td>${c.email}</td>
+                        <td>${c.phone || 'N/A'}</td>
+                        <td>${c.address || 'N/A'}</td>
+                        <td>${new Date(c.created_at || Date.now()).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem;">No registered clients found.</td></tr>`;
+            }
         }
 
         async function fetchOrders() {
