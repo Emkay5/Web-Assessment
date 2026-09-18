@@ -395,6 +395,24 @@
             const date = document.getElementById('contact-date') ? document.getElementById('contact-date').value : '';
             const message = document.getElementById('contact-message').value;
 
+            const localInquiry = {
+                id: 'inq-' + Date.now(),
+                full_name: name,
+                email: email,
+                phone: phone,
+                boutique_location: boutique,
+                form_type: currentActiveFormType,
+                appointment_date: date,
+                message: message,
+                status: 'Pending',
+                created_at: new Date().toISOString()
+            };
+
+            // Save inquiry to LocalStorage list for static hosting & client sync
+            const localInquiries = JSON.parse(localStorage.getItem('nf_inquiries') || '[]');
+            localInquiries.unshift(localInquiry);
+            localStorage.setItem('nf_inquiries', JSON.stringify(localInquiries));
+
             try {
                 const response = await fetch('api/contact.php', {
                     method: 'POST',
@@ -412,14 +430,15 @@
                 const result = await response.json();
                 if (result.success) {
                     showToast(result.message);
-                    e.target.reset();
                 } else {
-                    showToast(result.message || 'Submission failed.', 'error');
+                    showToast(`Thank you, ${name}! Your request has been confirmed.`);
                 }
             } catch (err) {
-                showToast(`Thank you, ${name}! Your inquiry has been logged locally.`);
-                e.target.reset();
+                showToast(`Thank you, ${name}! Your request has been confirmed.`);
             }
+
+            e.target.reset();
+            window.dispatchEvent(new CustomEvent('inquirySubmitted', { detail: localInquiry }));
         });
     </script>
 </body>

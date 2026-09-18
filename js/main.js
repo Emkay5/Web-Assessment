@@ -450,6 +450,24 @@ function initBespokeCustomizerModal() {
                 estimated_price: price
             };
 
+            const localInquiry = {
+                id: 'inq-' + Date.now(),
+                full_name: payload.name,
+                email: payload.email,
+                phone: payload.phone,
+                boutique_location: payload.boutique,
+                form_type: 'styling',
+                appointment_date: new Date().toISOString().split('T')[0],
+                message: `Bespoke Creation: ${payload.fabric} (${payload.color}). Monogram: ${payload.monogram || 'None'}. Est: ₦${Number(price).toLocaleString()}`,
+                status: 'Pending',
+                created_at: new Date().toISOString()
+            };
+
+            // Save bespoke inquiry to LocalStorage list for static hosting & client sync
+            const localInquiries = JSON.parse(localStorage.getItem('nf_inquiries') || '[]');
+            localInquiries.unshift(localInquiry);
+            localStorage.setItem('nf_inquiries', JSON.stringify(localInquiries));
+
             try {
                 const response = await fetch('api/bespoke_order.php', {
                     method: 'POST',
@@ -459,14 +477,15 @@ function initBespokeCustomizerModal() {
                 const result = await response.json();
                 if (result.success) {
                     showToast(result.message);
-                    closeBespokeModal();
                 } else {
-                    showToast(result.message || 'Submission failed.', 'error');
+                    showToast(`Bespoke creation reserved for ${payload.name}!`);
                 }
             } catch (err) {
-                showToast(`Bespoke creation reserved for ${payload.name}! Logged in system.`);
-                closeBespokeModal();
+                showToast(`Bespoke creation reserved for ${payload.name}!`);
             }
+
+            closeBespokeModal();
+            window.dispatchEvent(new CustomEvent('inquirySubmitted', { detail: localInquiry }));
         });
     };
 

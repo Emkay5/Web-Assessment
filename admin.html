@@ -748,34 +748,68 @@
 
         async function fetchOrders() {
             const tbody = document.getElementById('orders-table-body');
+            if (!tbody) return;
+
+            let dbOrders = [];
             try {
                 const res = await fetch('api/admin.php?action=get_orders');
                 const result = await res.json();
-                if (result.success && result.data.length > 0) {
-                    tbody.innerHTML = result.data.map(o => `
-                        <tr>
-                            <td><strong>${o.order_number}</strong></td>
-                            <td>${o.customer_name}<br><small style="color:var(--color-light-muted);">${o.customer_email || 'N/A'}</small></td>
-                            <td>${(o.items || []).map(i => `${i.product_name} (x${i.quantity})`).join('<br>')}</td>
-                            <td><strong>₦${Number(o.total_amount).toLocaleString()}</strong></td>
-                            <td>${new Date(o.created_at).toLocaleDateString()}</td>
-                            <td><span class="status-pill status-${o.status}">${o.status}</span></td>
-                            <td>
-                                <select class="status-select" onchange="updateOrderStatus(${o.id}, this.value)">
-                                    <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
-                                    <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
-                                    <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
-                                </select>
-                            </td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">No orders recorded yet.</td></tr>`;
+                if (result.success && Array.isArray(result.data)) {
+                    dbOrders = result.data;
                 }
             } catch(e) {}
+
+            // Merge with LocalStorage orders for static hosting / client sync
+            const localOrders = JSON.parse(localStorage.getItem('nf_orders') || '[]');
+            const orderMap = new Map();
+
+            dbOrders.forEach(o => orderMap.set(o.order_number, o));
+            localOrders.forEach(o => {
+                if (o && o.order_number && !orderMap.has(o.order_number)) {
+                    orderMap.set(o.order_number, o);
+                }
+            });
+
+            const allOrders = Array.from(orderMap.values());
+
+            // Compute total revenue & count
+            let totalRevenue = allOrders.reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
+            const revEl = document.getElementById('stat-revenue');
+            const ordEl = document.getElementById('stat-orders');
+            if (revEl) revEl.textContent = '₦' + totalRevenue.toLocaleString();
+            if (ordEl) ordEl.textContent = allOrders.length;
+
+            if (allOrders.length > 0) {
+                tbody.innerHTML = allOrders.map(o => `
+                    <tr>
+                        <td><strong>${o.order_number}</strong></td>
+                        <td>${o.customer_name || 'Guest Client'}<br><small style="color:var(--color-light-muted);">${o.customer_email || 'N/A'}</small></td>
+                        <td>${(o.items || []).map(i => `${i.product_name || i.name} (x${i.quantity})`).join('<br>') || 'Custom Items'}</td>
+                        <td><strong>₦${Number(o.total_amount).toLocaleString()}</strong></td>
+                        <td>${new Date(o.created_at || Date.now()).toLocaleDateString()}</td>
+                        <td><span class="status-pill status-${o.status}">${o.status}</span></td>
+                        <td>
+                            <select class="status-select" onchange="updateOrderStatus(${typeof o.id === 'number' ? o.id : `'${o.id}'`}, this.value)">
+                                <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                                <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            </select>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 2rem;">No orders recorded yet.</td></tr>`;
+            }
         }
 
         async function updateOrderStatus(orderId, status) {
+            // Update local memory orders
+            let localOrders = JSON.parse(localStorage.getItem('nf_orders') || '[]');
+            localOrders.forEach(o => {
+                if (o.id == orderId || o.order_number == orderId) o.status = status;
+            });
+            localStorage.setItem('nf_orders', JSON.stringify(localOrders));
+
             try {
                 const res = await fetch('api/admin.php', {
                     method: 'POST',
@@ -784,52 +818,89 @@
                 });
                 const result = await res.json();
                 if (result.success && window.showToast) showToast(result.message);
-                fetchStats();
             } catch(e){}
+
+            fetchOrders();
         }
 
         async function fetchInquiries() {
             const tbody = document.getElementById('inquiries-table-body');
             if (!tbody) return;
+
+            let dbInquiries = [];
             try {
                 const res = await fetch('api/admin.php?action=get_inquiries');
                 const result = await res.json();
-                if (result.success && Array.isArray(result.data) && result.data.length > 0) {
-                    tbody.innerHTML = result.data.map(i => `
-                        <tr>
-                            <td>#${i.id}</td>
-                            <td><strong>${i.full_name}</strong></td>
-                            <td>${i.email}<br><small style="color:var(--color-light-muted);">${i.phone || 'N/A'}</small></td>
-                            <td>${i.boutique_location}</td>
-                            <td><span style="color:var(--color-gold); font-weight:600;">${(i.form_type || 'inquiry').toUpperCase()}</span><br><small>${i.appointment_date || 'N/A'}</small></td>
-                            <td style="max-width:240px; font-size:0.8rem;">${i.message}</td>
-                            <td>
-                                <select class="status-select" onchange="updateInquiryStatus(${i.id}, this.value)">
-                                    <option value="Pending" ${i.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="Confirmed" ${i.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                                    <option value="Completed" ${i.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                </select>
-                            </td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--color-light-muted); padding: 2rem;">No inquiries recorded in MySQL database yet. Test submitting a form on contact.html!</td></tr>`;
+                if (result.success && Array.isArray(result.data)) {
+                    dbInquiries = result.data;
                 }
-            } catch(e){
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #e74c3c; padding: 2rem;">Unable to load inquiries. Ensure Apache & MySQL are running.</td></tr>`;
+            } catch(e) {}
+
+            // Merge with LocalStorage inquiries for static hosting / client sync
+            const localInquiries = JSON.parse(localStorage.getItem('nf_inquiries') || '[]');
+            const inquiryMap = new Map();
+
+            dbInquiries.forEach(i => inquiryMap.set(String(i.id), i));
+            localInquiries.forEach(i => {
+                if (i && !inquiryMap.has(String(i.id))) {
+                    inquiryMap.set(String(i.id), i);
+                }
+            });
+
+            const allInquiries = Array.from(inquiryMap.values());
+
+            const inqEl = document.getElementById('stat-inquiries');
+            if (inqEl) inqEl.textContent = allInquiries.length;
+
+            if (allInquiries.length > 0) {
+                tbody.innerHTML = allInquiries.map(i => `
+                    <tr>
+                        <td>#${i.id}</td>
+                        <td><strong>${i.full_name || i.name}</strong></td>
+                        <td>${i.email}<br><small style="color:var(--color-light-muted);">${i.phone || 'N/A'}</small></td>
+                        <td>${i.boutique_location || i.boutique || 'Abuja'}</td>
+                        <td><span style="color:var(--color-gold); font-weight:600;">${(i.form_type || 'inquiry').toUpperCase()}</span><br><small>${i.appointment_date || 'N/A'}</small></td>
+                        <td style="max-width:240px; font-size:0.8rem;">${i.message || 'Bespoke Consultation'}</td>
+                        <td>
+                            <select class="status-select" onchange="updateInquiryStatus('${i.id}', this.value)">
+                                <option value="Pending" ${i.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Confirmed" ${i.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                <option value="Completed" ${i.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            </select>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--color-light-muted); padding: 2rem;">No styling inquiries or messages recorded yet.</td></tr>`;
             }
         }
 
         async function updateInquiryStatus(inquiryId, status) {
+            // Update local memory inquiries
+            let localInquiries = JSON.parse(localStorage.getItem('nf_inquiries') || '[]');
+            localInquiries.forEach(i => {
+                if (String(i.id) === String(inquiryId)) i.status = status;
+            });
+            localStorage.setItem('nf_inquiries', JSON.stringify(localInquiries));
+
             try {
                 await fetch('api/admin.php', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ action: 'update_inquiry_status', inquiry_id: inquiryId, status: status })
                 });
-                fetchStats();
             } catch(e){}
+
+            fetchInquiries();
         }
+
+        window.addEventListener('orderPlaced', () => {
+            fetchOrders();
+        });
+
+        window.addEventListener('inquirySubmitted', () => {
+            fetchInquiries();
+        });
 
         async function fetchProducts() {
             const tbody = document.getElementById('products-table-body');
