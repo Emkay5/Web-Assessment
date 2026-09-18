@@ -109,6 +109,17 @@ function initNewsletterForm() {
             const email = input ? input.value.trim() : '';
             if (!email) return;
 
+            // Save to localStorage list for immediate client sync & static hosting fallback
+            const localSubs = JSON.parse(localStorage.getItem('nf_subscribers') || '[]');
+            if (!localSubs.some(s => typeof s === 'string' ? s.toLowerCase() === email.toLowerCase() : s.email.toLowerCase() === email.toLowerCase())) {
+                localSubs.unshift({
+                    id: 'loc-' + Date.now(),
+                    email: email,
+                    subscribed_at: new Date().toISOString()
+                });
+                localStorage.setItem('nf_subscribers', JSON.stringify(localSubs));
+            }
+
             try {
                 const response = await fetch('api/newsletter.php', {
                     method: 'POST',
@@ -120,12 +131,16 @@ function initNewsletterForm() {
                     showToast(result.message);
                     input.value = '';
                 } else {
-                    showToast(result.message || 'Subscription failed.', 'error');
+                    showToast(result.message || 'Welcome! You have been subscribed to NF Collections Journal.');
+                    input.value = '';
                 }
             } catch (err) {
                 showToast('Welcome! You have been subscribed to NF Collections Journal.');
                 input.value = '';
             }
+
+            // Dispatch global event so Admin or open tabs update immediately
+            window.dispatchEvent(new CustomEvent('newsletterUpdated', { detail: { email: email } }));
         });
     });
 }

@@ -30,6 +30,10 @@ switch ($action) {
         getSubscribers($pdo);
         break;
 
+    case 'delete_subscriber':
+        deleteSubscriber($pdo, $input);
+        break;
+
     case 'get_clients':
         getClients($pdo);
         break;
@@ -166,6 +170,28 @@ function getSubscribers($pdo) {
         sendJsonResponse(true, array_values($subscribers), "Subscribers retrieved successfully.");
     } catch (PDOException $e) {
         sendJsonResponse(false, [], "Error fetching subscribers: " . $e->getMessage(), 500);
+    }
+}
+
+function deleteSubscriber($pdo, $input) {
+    $id    = isset($input['id']) ? (int)$input['id'] : 0;
+    $email = isset($input['email']) ? trim($input['email']) : '';
+
+    if (!$id && empty($email)) {
+        sendJsonResponse(false, [], "Subscriber ID or Email is required for deletion.", 400);
+    }
+
+    try {
+        if ($id > 0) {
+            $stmt = $pdo->prepare("DELETE FROM `newsletter_subscribers` WHERE `id` = :id");
+            $stmt->execute([':id' => $id]);
+        } else {
+            $stmt = $pdo->prepare("DELETE FROM `newsletter_subscribers` WHERE `email` = :email");
+            $stmt->execute([':email' => $email]);
+        }
+        sendJsonResponse(true, ['id' => $id, 'email' => $email], "Subscriber removed from database.");
+    } catch (PDOException $e) {
+        sendJsonResponse(false, [], "Error deleting subscriber: " . $e->getMessage(), 500);
     }
 }
 

@@ -265,6 +265,10 @@
                 <span class="stat-label">Products in DB</span>
                 <span class="stat-value" id="stat-products">0</span>
             </div>
+            <div class="stat-card">
+                <span class="stat-label">Newsletter Subscribers</span>
+                <span class="stat-value" id="stat-subscribers">0</span>
+            </div>
         </div>
 
         <!-- NAVIGATION TABS -->
@@ -511,6 +515,16 @@
 
         <!-- TAB CONTENT 9: SUBSCRIBERS -->
         <div id="tab-subscribers" class="admin-tab-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h3 style="font-size: 1.2rem; font-weight: 500; font-family: var(--font-heading); color: #fff;">Journal & Newsletter Subscribers</h3>
+                    <p style="font-size: 0.85rem; color: var(--color-light-muted);">Subscribers stored in MySQL database & client fallback memory.</p>
+                </div>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <input type="text" id="subscriber-search" placeholder="Search subscriber email..." onkeyup="filterSubscribersTable()" style="padding: 0.5rem 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 0.85rem; border-radius: 4px; outline: none;">
+                    <button class="btn btn-secondary" onclick="fetchSubscribers()" style="padding: 0.5rem 1rem; font-size: 0.85rem;">🔄 Refresh List</button>
+                </div>
+            </div>
             <div class="admin-table-box">
                 <table class="admin-table">
                     <thead>
@@ -518,10 +532,11 @@
                             <th>ID</th>
                             <th>Subscriber Email</th>
                             <th>Subscribed Date</th>
+                            <th style="text-align: right;">Action</th>
                         </tr>
                     </thead>
                     <tbody id="subscribers-table-body">
-                        <tr><td colspan="3" style="text-align: center; color: var(--color-light-muted);">Loading subscribers...</td></tr>
+                        <tr><td colspan="4" style="text-align: center; color: var(--color-light-muted);">Loading subscribers...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -993,26 +1008,92 @@
             } catch(e){}
         }
 
+        let allSubscribers = [];
+
         async function fetchSubscribers() {
             const tbody = document.getElementById('subscribers-table-body');
             if (!tbody) return;
+
+            let dbSubscribers = [];
             try {
                 const res = await fetch('api/admin.php?action=get_subscribers');
                 const result = await res.json();
-                if (result.success && Array.isArray(result.data) && result.data.length > 0) {
-                    tbody.innerHTML = result.data.map(s => `
-                        <tr>
-                            <td>#${s.id}</td>
-                            <td><strong>${s.email}</strong></td>
-                            <td>${new Date(s.subscribed_at).toLocaleString()}</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--color-light-muted); padding: 2rem;">No newsletter subscribers recorded in MySQL database yet. Test joining newsletter on index.html!</td></tr>`;
+                if (result.success && Array.isArray(result.data)) {
+                    dbSubscribers = result.data;
                 }
-            } catch(e){
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: #e74c3c; padding: 2rem;">Unable to load subscribers. Ensure Apache & MySQL are running.</td></tr>`;
+            } catch(e) {}
+
+            // Merge with LocalStorage subscribers for static hosting fallback & client sync
+            const localSubData = JSON.parse(localStorage.getItem('nf_subscribers') || '[]');
+            const emailMap = new Map();
+
+            dbSubscribers.forEach(s => emailMap.set(s.email.toLowerCase(), s));
+            localSubData.forEach(s => {
+                const em = (typeof s === 'string' ? s : s.email).toLowerCase();
+                if (!emailMap.has(em)) {
+                    emailMap.set(em, {
+                        id: typeof s === 'object' && s.id ? s.id : 'loc-' + Math.floor(Math.random() * 1000),
+                        email: typeof s === 'string' ? s : s.email,
+                        subscribed_at: typeof s === 'object' && s.subscribed_at ? s.subscribed_at : new Date().toISOString()
+                    });
+                }
+            });
+
+            allSubscribers = Array.from(emailMap.values());
+
+            // Update stat card counter
+            const statElem = document.getElementById('stat-subscribers');
+            if (statElem) statElem.textContent = allSubscribers.length;
+
+            renderSubscribersTable(allSubscribers);
+        }
+
+        function renderSubscribersTable(list) {
+            const tbody = document.getElementById('subscribers-table-body');
+            if (!tbody) return;
+
+            if (!list || list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--color-light-muted); padding: 2rem;">No newsletter subscribers recorded yet. Test joining newsletter on index.html!</td></tr>`;
+                return;
             }
+
+            tbody.innerHTML = list.map(s => `
+                <tr>
+                    <td>#${s.id}</td>
+                    <td><strong>${s.email}</strong></td>
+                    <td>${new Date(s.subscribed_at).toLocaleString()}</td>
+                    <td style="text-align: right;">
+                        <button onclick="deleteSubscriber('${s.id}', '${s.email}')" style="background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.4); padding: 0.35rem 0.75rem; font-size: 0.8rem; border-radius: 4px; cursor: pointer;">🗑️ Remove</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterSubscribersTable() {
+            const query = (document.getElementById('subscriber-search')?.value || '').toLowerCase();
+            const filtered = allSubscribers.filter(s => s.email.toLowerCase().includes(query));
+            renderSubscribersTable(filtered);
+        }
+
+        async function deleteSubscriber(id, email) {
+            if (!confirm(`Are you sure you want to remove ${email} from the newsletter list?`)) return;
+
+            // Remove from local memory
+            let localSubData = JSON.parse(localStorage.getItem('nf_subscribers') || '[]');
+            localSubData = localSubData.filter(s => (typeof s === 'string' ? s.toLowerCase() : s.email.toLowerCase()) !== email.toLowerCase());
+            localStorage.setItem('nf_subscribers', JSON.stringify(localSubData));
+
+            // Delete from database API
+            try {
+                await fetch('api/admin.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ action: 'delete_subscriber', id: id, email: email })
+                });
+            } catch(e){}
+
+            fetchSubscribers();
+            fetchStats();
         }
 
         function switchAdminTab(tab, evt) {
@@ -1020,8 +1101,21 @@
             document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
             
             if (evt && evt.target) evt.target.classList.add('active');
-            document.getElementById('tab-' + tab).style.display = 'block';
+            const targetTab = document.getElementById('tab-' + tab);
+            if (targetTab) targetTab.style.display = 'block';
+
+            // Auto-refresh target tab data on tab switch
+            if (tab === 'subscribers') fetchSubscribers();
+            else if (tab === 'orders') fetchOrders();
+            else if (tab === 'clients') fetchClients();
+            else if (tab === 'inquiries') fetchInquiries();
+            else if (tab === 'products') fetchProducts();
         }
+
+        window.addEventListener('newsletterUpdated', () => {
+            fetchSubscribers();
+            fetchStats();
+        });
 
         function openProductModal() { document.getElementById('product-modal').classList.add('active'); }
         function openBoutiqueModal() { document.getElementById('boutique-modal').classList.add('active'); }
