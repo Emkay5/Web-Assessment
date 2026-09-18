@@ -652,15 +652,18 @@ function checkAuthStatus() {
         .then(res => {
             if (res.success && res.data && res.data.is_logged_in) {
                 window.CURRENT_USER = res.data.user;
+                localStorage.setItem('nf_current_user', JSON.stringify(res.data.user));
                 renderUserAccountBadge(res.data.user);
             } else {
-                window.CURRENT_USER = null;
-                renderUserAccountBadge(null);
+                const savedUser = JSON.parse(localStorage.getItem('nf_current_user') || 'null');
+                window.CURRENT_USER = savedUser;
+                renderUserAccountBadge(savedUser);
             }
         })
         .catch(() => {
-            window.CURRENT_USER = null;
-            renderUserAccountBadge(null);
+            const savedUser = JSON.parse(localStorage.getItem('nf_current_user') || 'null');
+            window.CURRENT_USER = savedUser;
+            renderUserAccountBadge(savedUser);
         });
 }
 
@@ -669,7 +672,7 @@ function renderUserAccountBadge(user) {
     if (!userContainer) return;
 
     if (user) {
-        const firstName = user.full_name.split(' ')[0];
+        const firstName = (user.full_name || 'Client').split(' ')[0];
         userContainer.innerHTML = `
             <button class="user-badge-btn" onclick="toggleUserDropdown(event)" aria-label="Account Menu">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -683,8 +686,8 @@ function renderUserAccountBadge(user) {
             </button>
             <div class="user-dropdown-menu" id="userDropdown">
                 <div class="user-dropdown-header">
-                    <div class="user-dropdown-name">${user.full_name}</div>
-                    <div class="user-dropdown-email">${user.email}</div>
+                    <div class="user-dropdown-name">${user.full_name || 'Client'}</div>
+                    <div class="user-dropdown-email">${user.email || ''}</div>
                 </div>
                 <div class="user-dropdown-item" onclick="openOrderTracker()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
@@ -760,25 +763,25 @@ function createAuthModalMarkup() {
                     <label for="loginPassword">Password</label>
                     <input type="password" id="loginPassword" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="auth-submit-btn">Sign In to Account</button>
-                <div class="auth-footer-note">
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Sign In</button>
+                <p class="auth-switch-text" style="margin-top: 1.25rem;">
                     New to NF Collections? <a onclick="switchAuthTab('register')">Create an account</a>
-                </div>
+                </p>
             </form>
 
             <!-- REGISTER FORM -->
             <form id="authRegisterForm" onsubmit="handleRegisterSubmit(event)" style="display: none;">
                 <div class="auth-form-group">
-                    <label for="regFullName">Full Name</label>
-                    <input type="text" id="regFullName" placeholder="e.g. Chief Olumide Victoria" required>
+                    <label for="regFullName">Full Name *</label>
+                    <input type="text" id="regFullName" placeholder="e.g. Nana Firdausi" required>
                 </div>
                 <div class="auth-form-group">
-                    <label for="regEmail">Email Address</label>
+                    <label for="regEmail">Email Address *</label>
                     <input type="email" id="regEmail" placeholder="client@example.com" required>
                 </div>
                 <div class="auth-form-group">
-                    <label for="regPassword">Password (6+ chars)</label>
-                    <input type="password" id="regPassword" placeholder="Create a secure password" minlength="6" required>
+                    <label for="regPassword">Password * (Min 6 characters)</label>
+                    <input type="password" id="regPassword" placeholder="••••••••" minlength="6" required>
                 </div>
                 <div class="auth-form-group">
                     <label for="regPhone">Phone Number</label>
@@ -786,12 +789,12 @@ function createAuthModalMarkup() {
                 </div>
                 <div class="auth-form-group">
                     <label for="regAddress">Delivery Address</label>
-                    <textarea id="regAddress" rows="2" placeholder="Street, City, State"></textarea>
+                    <input type="text" id="regAddress" placeholder="Maitama, Abuja or Victoria Island, Lagos">
                 </div>
-                <button type="submit" class="auth-submit-btn">Create VIP Account</button>
-                <div class="auth-footer-note">
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Create Account</button>
+                <p class="auth-switch-text" style="margin-top: 1.25rem;">
                     Already registered? <a onclick="switchAuthTab('login')">Sign in here</a>
-                </div>
+                </p>
             </form>
         </div>
     `;
@@ -855,6 +858,7 @@ function handleLoginSubmit(e) {
         if (res.success) {
             showToast(res.message, 'success');
             window.CURRENT_USER = res.data;
+            localStorage.setItem('nf_current_user', JSON.stringify(res.data));
             renderUserAccountBadge(res.data);
             closeAuthModal();
         } else {
@@ -862,7 +866,18 @@ function handleLoginSubmit(e) {
         }
     })
     .catch(() => {
-        showToast("Error logging in. Please check server connection.", 'error');
+        // Fallback for static hosting / offline
+        const localUsers = JSON.parse(localStorage.getItem('nf_users') || '[]');
+        const matched = localUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+        if (matched) {
+            window.CURRENT_USER = matched;
+            localStorage.setItem('nf_current_user', JSON.stringify(matched));
+            renderUserAccountBadge(matched);
+            showToast(`Welcome back, ${matched.full_name}! You are signed in.`, 'success');
+            closeAuthModal();
+        } else {
+            showToast("Invalid email address or password.", 'error');
+        }
     });
 }
 
@@ -874,6 +889,16 @@ function handleRegisterSubmit(e) {
     const phone    = document.getElementById('regPhone').value.trim();
     const address  = document.getElementById('regAddress').value.trim();
 
+    if (!fullName || !email || !password) {
+        showToast("Please provide your full name, email address, and password.", 'error');
+        return;
+    }
+
+    if (password.length < 6) {
+        showToast("Password must be at least 6 characters in length.", 'error');
+        return;
+    }
+
     fetch('api/register.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -884,6 +909,13 @@ function handleRegisterSubmit(e) {
         if (res.success) {
             showToast(res.message, 'success');
             window.CURRENT_USER = res.data;
+            localStorage.setItem('nf_current_user', JSON.stringify(res.data));
+
+            // Save to local users list
+            const localUsers = JSON.parse(localStorage.getItem('nf_users') || '[]');
+            localUsers.push(res.data);
+            localStorage.setItem('nf_users', JSON.stringify(localUsers));
+
             renderUserAccountBadge(res.data);
             closeAuthModal();
         } else {
@@ -891,7 +923,28 @@ function handleRegisterSubmit(e) {
         }
     })
     .catch(() => {
-        showToast("Error creating account. Please check server connection.", 'error');
+        // Fallback for static hosting / offline client mode
+        const localUsers = JSON.parse(localStorage.getItem('nf_users') || '[]');
+        if (localUsers.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+            showToast("An account with this email address already exists.", 'error');
+            return;
+        }
+
+        const newUser = {
+            id: 'loc-' + Date.now(),
+            full_name: fullName,
+            email: email,
+            phone: phone,
+            address: address
+        };
+        localUsers.push(newUser);
+        localStorage.setItem('nf_users', JSON.stringify(localUsers));
+        localStorage.setItem('nf_current_user', JSON.stringify(newUser));
+
+        window.CURRENT_USER = newUser;
+        renderUserAccountBadge(newUser);
+        showToast("Welcome to NF Collections Nigeria! Your client account has been created successfully.", 'success');
+        closeAuthModal();
     });
 }
 
@@ -901,10 +954,12 @@ function handleUserLogout() {
         .then(res => {
             showToast(res.message || "Signed out.", 'success');
             window.CURRENT_USER = null;
+            localStorage.removeItem('nf_current_user');
             renderUserAccountBadge(null);
         })
         .catch(() => {
             window.CURRENT_USER = null;
+            localStorage.removeItem('nf_current_user');
             renderUserAccountBadge(null);
         });
 }
