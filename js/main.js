@@ -220,7 +220,7 @@ function initFloatingAdvisor() {
         }
     };
     widget.innerHTML = `
-        <img class="advisor-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Private Advisor">
+        <img class="advisor-avatar" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=100&q=80" alt="Private Advisor">
         <div class="advisor-text">
             <span>Private Styling Advisor</span>
             <strong>Book Atelier Consultation</strong>

@@ -9,63 +9,63 @@ const GALLERY_ITEMS = [
         title: 'Autumn / Winter ’26 Showcase',
         category: 'Runway',
         tag: 'Lagos Fashion Week',
-        image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Look 01: Double-faced cashmere coat with hand-sculpted sash.'
+        image: 'images/hero_nigerian.jpg',
+        caption: 'Look 01: Regal Nigerian Agbada coat with gold thread embroidery.'
     },
     {
         id: 'gal-02',
         title: 'Presidential Gala Campaign',
         category: 'Campaign',
         tag: 'Abuja Editorial',
-        image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Model shot at Maitama Gala venue featuring modern structured tailoring.'
+        image: 'images/outerwear_nigerian.jpg',
+        caption: 'Model shot at Maitama Gala venue featuring sovereign Nigerian tailoring.'
     },
     {
         id: 'gal-03',
-        title: 'Master Silk Draping',
+        title: 'Master Silk & Velvet Craft',
         category: 'Atelier',
         tag: 'Craftsmanship',
-        image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Hand-pleating pure organic silk at our Kaduna Atelier.'
+        image: 'images/tailoring_nigerian.jpg',
+        caption: 'Hand-tailoring pure organic silk at our Kaduna Atelier.'
     },
     {
         id: 'gal-04',
         title: 'Spring / Summer ’26 Runway',
         category: 'Runway',
         tag: 'West African Fashion Week',
-        image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Monochromatic architectural trench coat in warm champagne alabaster.'
+        image: 'images/outerwear_nigerian.jpg',
+        caption: 'Monochromatic architectural coat in warm champagne alabaster.'
     },
     {
         id: 'gal-05',
         title: 'Victoria Island Portrait',
         category: 'Campaign',
         tag: 'Lagos Editorial',
-        image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=1200&q=80',
+        image: 'images/hero_nigerian.jpg',
         caption: 'NF Collections tailoring photographed against Lagos modern architecture.'
     },
     {
         id: 'gal-06',
-        title: 'Handcrafted Leather Sculpting',
+        title: 'Handcrafted Nigerian Leatherwork',
         category: 'Atelier',
         tag: 'Handcraft',
-        image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Saddle-stitching genuine leather handbags with waxed linen thread.'
+        image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=1200&q=80',
+        caption: 'Saddle-stitching genuine Kaduna leather handbags with waxed linen thread.'
     },
     {
         id: 'gal-07',
         title: 'Midnight Evening Silhouette',
         category: 'Runway',
         tag: 'Couture Line',
-        image: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Bias-cut Mulberry silk gown with low cowl open back.'
+        image: 'images/tailoring_nigerian.jpg',
+        caption: 'Bias-cut Nigerian Mulberry silk gown with gold embroidery lapels.'
     },
     {
         id: 'gal-08',
-        title: 'Kaduna Presentation',
+        title: 'Kaduna Flagship Presentation',
         category: 'Campaign',
         tag: 'Atelier Showcase',
-        image: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=1200&q=80',
+        image: 'images/outerwear_nigerian.jpg',
         caption: 'Exclusive presentation at the NF Collections Kaduna Flagship.'
     },
     {
@@ -73,8 +73,8 @@ const GALLERY_ITEMS = [
         title: 'Pattern Cutting Precision',
         category: 'Atelier',
         tag: 'Sustainable Tech',
-        image: 'https://images.unsplash.com/photo-1520006403909-838d6b92c22e?auto=format&fit=crop&w=1200&q=80',
-        caption: 'Zero-waste pattern engineering by our Master Cutter.'
+        image: 'images/hero_nigerian.jpg',
+        caption: 'Zero-waste pattern engineering by our Master Cutter in Lagos.'
     }
 ];
 
