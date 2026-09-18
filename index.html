@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NF Collections | Luxury Haute Couture & Sustainable Fashion Nigeria</title>
+    <meta name="description" content="NF Collections is a Nigerian haute couture & luxury atelier crafting timeless outerwear, bespoke tailoring, and sustainable silk creations.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+    <!-- SITE HEADER -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-logo">
+                NF Collections <span>Nigeria</span>
+            </a>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="products.html" class="nav-link">Collections</a>
+                <a href="gallery.html" class="nav-link">Lookbook</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <select class="currency-select" title="Change Currency">
+                    <option value="NGN">₦ NGN</option>
+                    <option value="USD">$ USD</option>
+                    <option value="GBP">£ GBP</option>
+                    <option value="EUR">€ EUR</option>
+                </select>
+
+                <button class="icon-btn" onclick="openOrderTracker()" aria-label="Track Order" title="Track Live Order">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                </button>
+
+                <div class="user-menu-wrapper">
+                    <button class="user-badge-btn" onclick="openAuthModal('login')" aria-label="Sign In">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Sign In / Register</span>
+                    </button>
+                </div>
+
+                <button class="icon-btn cart-trigger" aria-label="Shopping Bag">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-badge">0</span>
+                </button>
+
+                <button class="mobile-toggle" aria-label="Toggle Navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-drawer">
+        <div class="mobile-drawer-header">
+            <a href="index.html" class="brand-logo">NF Collections</a>
+            <button class="close-btn mobile-drawer-close">✕</button>
+        </div>
+        <nav class="mobile-nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="products.html">Collections</a>
+            <a href="gallery.html">Lookbook</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="javascript:void(0)" onclick="openAuthModal('login')">Sign In / Register 👤</a>
+            <a href="javascript:void(0)" onclick="openOrderTracker()">Track Order 📦</a>
+        </nav>
+        <div style="padding-top: 2rem; border-top: 1px solid var(--color-border); font-size: 0.85rem; color: var(--color-muted);">
+            <p>Main Atelier: 12 Gana Street, Maitama, Abuja, Nigeria</p>
+        </div>
+    </div>
+
+    <!-- HERO EDITORIAL SECTION -->
+    <section class="hero-editorial">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span class="hero-subtitle">Autumn / Winter ’26 Collection</span>
+                <h1 class="heading-xl hero-title">The Art of Modern Elegance</h1>
+                <p class="hero-description">
+                    Sculptural coats, fluid silk dresses, and uncompromised bespoke tailoring. Designed in Nigeria for the discerning modernist.
+                </p>
+                <div class="hero-actions">
+                    <a href="products.html" class="btn btn-primary">Explore Collection</a>
+                    <button onclick="openBespokeModal()" class="btn btn-gold">Custom Bespoke Atelier ✂️</button>
+                </div>
+            </div>
+            <div class="hero-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=1000&q=80" alt="NF Collections Luxury Coat">
+                <div class="hero-image-badge">
+                    <p class="badge-title">Handcrafted Cashmere Coat</p>
+                    <p class="badge-sub">Limited Atelier Edition #04</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFINITE MARQUEE TICKER -->
+    <div class="ticker-wrap">
+        <div class="ticker-move">
+            <div class="ticker-item">Handcrafted in Lagos & Kaduna</div>
+            <div class="ticker-item">100% Traceable Premium Wool & Silk</div>
+            <div class="ticker-item">Nationwide & Worldwide Express Delivery</div>
+            <div class="ticker-item">Private Styling Appointments Available</div>
+            <div class="ticker-item">Handcrafted in Lagos & Kaduna</div>
+            <div class="ticker-item">100% Traceable Premium Wool & Silk</div>
+            <div class="ticker-item">Nationwide & Worldwide Express Delivery</div>
+            <div class="ticker-item">Private Styling Appointments Available</div>
+        </div>
+    </div>
+
+    <!-- CATEGORY SPOTLIGHT CARDS -->
+    <section class="section container">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <span class="text-uppercase" style="color: var(--color-gold);">Curated Lineage</span>
+            <h2 class="heading-lg" style="margin-top: 0.5rem;">Explore By Category</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+            <a href="products.html" class="gallery-item" style="height: 480px;">
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80" alt="Outerwear">
+                <div class="gallery-overlay" style="opacity: 1; background: linear-gradient(to top, rgba(13,13,14,0.7) 0%, transparent 70%);">
+                    <span class="gallery-tag">12 Signature Pieces</span>
+                    <h3 class="gallery-caption">Outerwear & Trench</h3>
+                </div>
+            </a>
+            <a href="products.html" class="gallery-item" style="height: 480px;">
+                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80" alt="Tailoring">
+                <div class="gallery-overlay" style="opacity: 1; background: linear-gradient(to top, rgba(13,13,14,0.7) 0%, transparent 70%);">
+                    <span class="gallery-tag">08 Tailored Suits</span>
+                    <h3 class="gallery-caption">Bespoke Tailoring</h3>
+                </div>
+            </a>
+            <a href="products.html" class="gallery-item" style="height: 480px;">
+                <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80" alt="Leather Goods">
+                <div class="gallery-overlay" style="opacity: 1; background: linear-gradient(to top, rgba(13,13,14,0.7) 0%, transparent 70%);">
+                    <span class="gallery-tag">Genuine Leather</span>
+                    <h3 class="gallery-caption">Bags & Accessories</h3>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- FEATURED COLLECTION SHOWCASE -->
+    <section class="section container" style="border-top: 1px solid var(--color-border); padding-top: 6rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem;">
+            <div>
+                <span class="text-uppercase" style="color: var(--color-gold);">Autumn / Winter Selection</span>
+                <h2 class="heading-lg" style="margin-top: 0.5rem;">Featured Creations</h2>
+            </div>
+            <a href="products.html" class="btn btn-outline">View All Creations →</a>
+        </div>
+
+        <div class="products-grid" id="featured-home-grid">
+            <!-- Dynamic products populated by JS -->
+        </div>
+    </section>
+
+    <!-- BRAND PHILOSOPHY & CRAFTSMANSHIP BANNER -->
+    <section class="section-lg" style="background-color: var(--color-obsidian); color: var(--color-white); margin-top: 5rem;">
+        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;">
+            <div>
+                <span class="text-uppercase" style="color: var(--color-gold);">Atelier Heritage</span>
+                <h2 class="heading-lg" style="margin: 1rem 0 1.5rem; color: var(--color-white);">Sublime Luxury, Zero Waste</h2>
+                <p style="color: var(--color-light-muted); line-height: 1.8; margin-bottom: 2rem; font-size: 1.05rem;">
+                    Every garment bearing the NF Collections hallmark undergoes over 60 hours of precision pattern-making and hand-stitching by master artisans in Nigeria. We work exclusively with certified organic wool, fine silk, and eco-friendly packaging.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; border-top: 1px solid var(--color-border-dark); padding-top: 2rem; margin-bottom: 2.5rem;">
+                    <div>
+                        <h3 style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--color-gold);">100%</h3>
+                        <p style="font-size: 0.8125rem; text-transform: uppercase; color: var(--color-light-muted); letter-spacing: 0.1em;">Traceable Fabrics</p>
+                    </div>
+                    <div>
+                        <h3 style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--color-gold);">60+ Hrs</h3>
+                        <p style="font-size: 0.8125rem; text-transform: uppercase; color: var(--color-light-muted); letter-spacing: 0.1em;">Craftsmanship Per Piece</p>
+                    </div>
+                </div>
+
+                <a href="about.html" class="btn btn-gold">Discover Our Craftsmanship</a>
+            </div>
+
+            <div style="position: relative; border-radius: var(--radius-sm); overflow: hidden; height: 550px;">
+                <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=900&q=80" alt="Artisan Craftsmanship" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+    </section>
+
+    <!-- PRESS & RECOGNITION -->
+    <section class="section container" style="text-align: center;">
+        <span class="text-uppercase" style="color: var(--color-gold);">Editorial Recognition</span>
+        <h2 class="heading-md" style="margin-top: 0.5rem; margin-bottom: 3rem;">As Featured In</h2>
+        <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 3rem; opacity: 0.7;">
+            <h3 style="font-family: var(--font-serif); font-size: 2rem; font-weight: 700; letter-spacing: 0.1em;">VOGUE</h3>
+            <h3 style="font-family: var(--font-serif); font-size: 2rem; font-weight: 700; letter-spacing: 0.1em;">THISDAY STYLE</h3>
+            <h3 style="font-family: var(--font-serif); font-size: 2rem; font-weight: 700; letter-spacing: 0.05em;">GUARDIAN LIFE</h3>
+            <h3 style="font-family: var(--font-serif); font-size: 2rem; font-weight: 700; letter-spacing: 0.1em;">GQ</h3>
+        </div>
+    </section>
+
+    <!-- SHOPPING BAG DRAWER MODAL -->
+    <div class="drawer-backdrop" onclick="toggleCartDrawer(false)"></div>
+    <div class="cart-drawer">
+        <div class="cart-header">
+            <h3 class="cart-title">Your Shopping Bag</h3>
+            <button class="close-btn" onclick="toggleCartDrawer(false)">✕</button>
+        </div>
+        <div class="cart-body" id="cart-body">
+            <!-- Dynamic Cart Items -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-summary-row">
+                <span>Shipping & Taxes</span>
+                <span>Calculated at checkout</span>
+            </div>
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cart-total">₦0</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="checkoutOrder()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- SITE FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand-logo">NF Collections <span>Nigeria</span></a>
+                    <p>Nigerian haute couture atelier dedicated to sustainable elegance, flawless tailoring, and architectural minimalism.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-icon" aria-label="Instagram">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Pinterest">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.25 2.67 7.9 6.44 9.34-.09-.78-.17-2.07.04-2.96.18-.79 1.17-4.99 1.17-4.99s-.3-.6-.3-1.49c0-1.4.81-2.44 1.82-2.44.86 0 1.27.65 1.27 1.42 0 .86-.55 2.16-.83 3.36-.24 1.01.5 1.83 1.49 1.83 1.79 0 3.17-1.89 3.17-4.62 0-2.42-1.74-4.11-4.56 2.15-4.56 4.38 0 .87.33 1.79.75 2.3.08.1.09.19.07.29-.07.31-.24 .98-.28 1.12-.05.21-.17.26-.39.16-1.46-.68-2.37-2.81-2.37-4.52 0-3.68 2.68-7.06 7.72-7.06 4.05 0 7.21 2.89 7.21 6.75 0 4.03-2.54 7.27-6.07 7.27-1.18 0-2.3-.62-2.68-1.34l-.73 2.78c-.26 1.02-.97 2.3-1.44 3.07C9.9 21.84 10.93 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"></path></svg>
+                        </a>
+                        <a href="#" class="social-icon" aria-label="Twitter">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Navigation</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About Us</a>
+                        <a href="products.html">Autumn '26 Collection</a>
+                        <a href="gallery.html">Runway Lookbook</a>
+                        <a href="contact.html">Boutique & Contact</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Atelier Services</h4>
+                    <div class="footer-links">
+                        <a href="contact.html">Private Styling</a>
+                        <a href="contact.html">Bespoke Alterations</a>
+                        <a href="contact.html">Nationwide Shipping</a>
+                        <a href="contact.html">Garment Care Guide</a>
+                        <a href="contact.html">Press Inquiries</a>
+                        <a href="admin.html" style="color: var(--color-gold);">Atelier Admin Portal 🔒</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Newsletter</h4>
+                    <p style="font-size: 0.875rem; color: var(--color-light-muted); margin-bottom: 1rem;">Subscribe to receive invitations to private trunk shows and seasonal previews.</p>
+                    <form class="newsletter-form">
+                        <div class="newsletter-input-group">
+                            <input type="email" class="newsletter-input" placeholder="Enter your email address..." required>
+                            <button type="submit" class="newsletter-btn">Join</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 NF Collections Nigeria. All rights reserved. Designed for Digital Presence Final Project.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Preferences</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/products.js"></script>
+    <script>
+        // Render 4 home page featured products dynamically on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const homeGrid = document.getElementById('featured-home-grid');
+            if (homeGrid && typeof PRODUCTS_DATA !== 'undefined') {
+                const homeProducts = PRODUCTS_DATA.slice(0, 4);
+                homeGrid.innerHTML = homeProducts.map(product => `
+                    <div class="product-card" data-id="${product.id}">
+                        <div class="product-image-box">
+                            ${product.badge ? `<span class="product-badge ${product.badgeColor}">${product.badge}</span>` : ''}
+                            <img class="product-image-primary" src="${product.image1}" alt="${product.name}" loading="lazy">
+                            <img class="product-image-secondary" src="${product.image2}" alt="${product.name}" loading="lazy">
+                            <div class="product-quick-actions">
+                                <button class="product-action-btn" onclick="openQuickView('${product.id}')">Quick View</button>
+                                <button class="product-action-btn" onclick="addToCart('${product.id}')">Add to Bag</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category">${product.category}</span>
+                            <h3 class="product-name">${product.name}</h3>
+                            <div class="product-price-box">
+                                <span class="product-price">₦${product.price.toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        });
+    </script>
+</body>
+</html>

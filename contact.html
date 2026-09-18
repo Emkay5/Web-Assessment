@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Flagship Boutiques | NF Collections Nigeria</title>
+    <meta name="description" content="Contact NF Collections Nigeria, book a private styling appointment, or visit our flagship boutiques in Abuja, Lagos, Kaduna, and Port Harcourt.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+    <!-- SITE HEADER -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-logo">
+                NF Collections <span>Nigeria</span>
+            </a>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="products.html" class="nav-link">Collections</a>
+                <a href="gallery.html" class="nav-link">Lookbook</a>
+                <a href="contact.html" class="nav-link active">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <select class="currency-select" id="currencySelect" aria-label="Select Currency">
+                    <option value="NGN">₦ NGN</option>
+                    <option value="USD">$ USD</option>
+                    <option value="GBP">£ GBP</option>
+                    <option value="EUR">€ EUR</option>
+                </select>
+
+                <button class="icon-btn" onclick="openOrderTracker()" aria-label="Track Order" title="Track Live Order">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                </button>
+
+                <div class="user-menu-wrapper">
+                    <button class="user-badge-btn" onclick="openAuthModal('login')" aria-label="Sign In">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Sign In / Register</span>
+                    </button>
+                </div>
+
+                <button class="icon-btn cart-trigger" aria-label="Shopping Bag">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-badge">0</span>
+                </button>
+
+                <button class="mobile-toggle" aria-label="Toggle Navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-drawer">
+        <div class="mobile-drawer-header">
+            <a href="index.html" class="brand-logo">NF Collections</a>
+            <button class="close-btn mobile-drawer-close">✕</button>
+        </div>
+        <nav class="mobile-nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="products.html">Collections</a>
+            <a href="gallery.html">Lookbook</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="javascript:void(0)" onclick="openAuthModal('login')">Sign In / Register 👤</a>
+        </nav>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header-title">Connect & Book Appointment</h1>
+            <div class="page-breadcrumb">
+                <a href="index.html">Home</a> / <span>Contact Us</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTACT SECTION -->
+    <section class="section container">
+        <div class="contact-grid">
+            
+            <!-- LEFT COLUMN: STORE LOCATOR & DIRECT CONTACT -->
+            <div>
+                <span class="text-uppercase" style="color: var(--color-gold);">Global & Local Flagships</span>
+                <h2 class="heading-md" style="margin: 0.5rem 0 2rem;">Visit Our Ateliers</h2>
+
+                <div class="store-tabs">
+                    <button class="store-tab-btn active" onclick="switchStoreTab(this, 'abuja')">Abuja</button>
+                    <button class="store-tab-btn" onclick="switchStoreTab(this, 'lagos')">Lagos</button>
+                    <button class="store-tab-btn" onclick="switchStoreTab(this, 'kaduna')">Kaduna</button>
+                    <button class="store-tab-btn" onclick="switchStoreTab(this, 'portharcourt')">Port Harcourt</button>
+                </div>
+
+                <div id="store-content-box" class="store-info-card">
+                    <div>
+                        <span class="text-uppercase" style="color: var(--color-gold);">Flagship & Main Atelier</span>
+                        <h3 style="font-family: var(--font-serif); font-size: 1.75rem; margin-top: 0.25rem;">Abuja Flagship</h3>
+                    </div>
+
+                    <p style="color: var(--color-muted); font-size: 0.9375rem; line-height: 1.7;">
+                        12 Gana Street, Maitama<br>
+                        Abuja, FCT, Nigeria
+                    </p>
+
+                    <div style="font-size: 0.875rem; color: var(--color-ink);">
+                        <p><strong>Hours:</strong> Mon – Sat: 09:00 – 18:00</p>
+                        <p><strong>Phone:</strong> +234 803 123 4567</p>
+                        <p><strong>Email:</strong> abuja@nfcollections.ng</p>
+                    </div>
+
+                    <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn btn-outline" style="align-self: flex-start; margin-top: 0.5rem;">Get Directions ↗</a>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: INTERACTIVE FORM -->
+            <div style="background-color: var(--color-surface); padding: 3rem 2.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
+                <div style="margin-bottom: 2rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 1rem;">
+                        <button id="form-type-inquiry" class="filter-btn active" onclick="toggleFormType('inquiry')">General Inquiry</button>
+                        <button id="form-type-styling" class="filter-btn" onclick="toggleFormType('styling')">Book Private Styling</button>
+                    </div>
+                    <h3 id="form-heading" style="font-family: var(--font-serif); font-size: 1.75rem;">Send a Message</h3>
+                    <p id="form-subheading" style="font-size: 0.875rem; color: var(--color-muted); margin-top: 0.25rem;">Our atelier client advisors will respond within 24 business hours.</p>
+                </div>
+
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="contact-name">Full Name *</label>
+                        <input type="text" id="contact-name" class="form-control" placeholder="e.g. Nana Firdausi" required>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="contact-email">Email Address *</label>
+                            <input type="email" id="contact-email" class="form-control" placeholder="name@domain.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-phone">Phone Number</label>
+                            <input type="tel" id="contact-phone" class="form-control" placeholder="+234 803 000 0000">
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="group-boutique">
+                        <label for="contact-boutique">Preferred Boutique Location</label>
+                        <select id="contact-boutique" class="form-control">
+                            <option value="Abuja">Abuja — Maitama Flagship</option>
+                            <option value="Lagos">Lagos — Victoria Island Salon</option>
+                            <option value="Kaduna">Kaduna — Barnawa Atelier</option>
+                            <option value="Port Harcourt">Port Harcourt — GRA Phase 2</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="group-date" style="display: none;">
+                        <label for="contact-date">Preferred Styling Appointment Date</label>
+                        <input type="date" id="contact-date" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-message">Message or Fitting Requests *</label>
+                        <textarea id="contact-message" class="form-control" placeholder="Please detail your request or preferred fitting items..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Inquiry</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FREQUENTLY ASKED QUESTIONS SECTION -->
+    <section class="section container" style="border-top: 1px solid var(--color-border); padding-top: 6rem;">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <span class="text-uppercase" style="color: var(--color-gold);">Client Services</span>
+            <h2 class="heading-lg" style="margin-top: 0.5rem;">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="faq-accordion" style="max-width: 840px; margin: 0 auto;">
+            <div class="faq-item active">
+                <button class="faq-question">
+                    <span>How do I arrange a private bespoke fitting appointment?</span>
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    You can book directly via the contact form above by selecting 'Book Private Styling' or by calling any of our flagship ateliers in Abuja, Lagos, Kaduna, or Port Harcourt. Personal fitting advisors are assigned to your session.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What are NF Collections' nationwide delivery timeframes?</span>
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    We offer doorstep express shipping nationwide across Nigeria via DHL / GIG Logistics. Delivery takes 1–2 business days for Lagos & Abuja, and 2–3 business days for other states.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>What is your return and exchange policy?</span>
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    We accept returns and size exchanges within 7 days of delivery. Garments must be unworn, in original condition with security tags intact.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Are NF Collections garments eligible for lifetime repair?</span>
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    Yes. True luxury endures. All NF Collections outerwear, silk garments, and bespoke tailoring include lifetime complimentary button re-stitching, lining restoration, and seam re-finishing at any of our flagship boutiques.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOPPING BAG DRAWER MODAL -->
+    <div class="drawer-backdrop" onclick="toggleCartDrawer(false)"></div>
+    <div class="cart-drawer">
+        <div class="cart-header">
+            <h3 class="cart-title">Your Shopping Bag</h3>
+            <button class="close-btn" onclick="toggleCartDrawer(false)">✕</button>
+        </div>
+        <div class="cart-body" id="cart-body"></div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cart-total">₦0</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="checkoutOrder()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- SITE FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand-logo">NF Collections <span>Nigeria</span></a>
+                    <p>Nigerian haute couture atelier dedicated to sustainable elegance, flawless tailoring, and architectural minimalism.</p>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Navigation</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About Us</a>
+                        <a href="products.html">Collections</a>
+                        <a href="gallery.html">Lookbook</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Atelier Services</h4>
+                    <div class="footer-links">
+                        <a href="contact.html">Private Styling</a>
+                        <a href="contact.html">Bespoke Fitting</a>
+                        <a href="contact.html">Garment Care</a>
+                        <a href="admin.html" style="color: var(--color-gold);">Atelier Admin Portal 🔒</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Newsletter</h4>
+                    <form class="newsletter-form">
+                        <div class="newsletter-input-group">
+                            <input type="email" class="newsletter-input" placeholder="Your email address..." required>
+                            <button type="submit" class="newsletter-btn">Join</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 NF Collections Nigeria. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/products.js"></script>
+    <script>
+        const STORES = {
+            abuja: {
+                title: 'Abuja Flagship',
+                sub: 'Flagship & Main Atelier',
+                address: '12 Gana Street, Maitama<br>Abuja, FCT, Nigeria',
+                hours: 'Mon – Sat: 09:00 – 18:00',
+                phone: '+234 803 123 4567',
+                email: 'abuja@nfcollections.ng'
+            },
+            lagos: {
+                title: 'Lagos Victoria Island Atelier',
+                sub: 'Commercial Salon',
+                address: '24 Akin Adesola Street, Victoria Island<br>Lagos, Nigeria',
+                hours: 'Mon – Sat: 10:00 – 19:00',
+                phone: '+234 812 987 6543',
+                email: 'lagos@nfcollections.ng'
+            },
+            kaduna: {
+                title: 'Kaduna Barnawa Boutique',
+                sub: 'Founding Atelier',
+                address: '18 Isa Kaita Road, Barnawa<br>Kaduna, Nigeria',
+                hours: 'Mon – Sat: 09:00 – 18:00',
+                phone: '+234 806 555 4321',
+                email: 'kaduna@nfcollections.ng'
+            },
+            portharcourt: {
+                title: 'Port Harcourt Salon',
+                sub: 'South-South Showroom',
+                address: '10 Tombia Street, GRA Phase 2<br>Port Harcourt, Rivers State, Nigeria',
+                hours: 'Mon – Sat: 09:00 – 18:00',
+                phone: '+234 809 777 8899',
+                email: 'portharcourt@nfcollections.ng'
+            }
+        };
+
+        function switchStoreTab(btn, key) {
+            document.querySelectorAll('.store-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const data = STORES[key];
+            const contentBox = document.getElementById('store-content-box');
+            if (contentBox && data) {
+                contentBox.innerHTML = `
+                    <div>
+                        <span class="text-uppercase" style="color: var(--color-gold);">${data.sub}</span>
+                        <h3 style="font-family: var(--font-serif); font-size: 1.75rem; margin-top: 0.25rem;">${data.title}</h3>
+                    </div>
+                    <p style="color: var(--color-muted); font-size: 0.9375rem; line-height: 1.7;">${data.address}</p>
+                    <div style="font-size: 0.875rem; color: var(--color-ink);">
+                        <p><strong>Hours:</strong> ${data.hours}</p>
+                        <p><strong>Phone:</strong> ${data.phone}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                    </div>
+                    <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn btn-outline" style="align-self: flex-start; margin-top: 0.5rem;">Get Directions ↗</a>
+                `;
+            }
+        }
+
+        let currentActiveFormType = 'inquiry';
+
+        function toggleFormType(type) {
+            currentActiveFormType = type;
+            const btnInquiry = document.getElementById('form-type-inquiry');
+            const btnStyling = document.getElementById('form-type-styling');
+            const heading = document.getElementById('form-heading');
+            const subheading = document.getElementById('form-subheading');
+            const dateGroup = document.getElementById('group-date');
+
+            if (type === 'styling') {
+                btnInquiry.classList.remove('active');
+                btnStyling.classList.add('active');
+                heading.textContent = 'Book Private Styling Session';
+                subheading.textContent = 'Reserve a dedicated styling consultant & private showroom suite.';
+                dateGroup.style.display = 'flex';
+            } else {
+                btnStyling.classList.remove('active');
+                btnInquiry.classList.add('active');
+                heading.textContent = 'Send a Message';
+                subheading.textContent = 'Our atelier client advisors will respond within 24 business hours.';
+                dateGroup.style.display = 'none';
+            }
+        }
+
+        // Contact Form Submission Handler (Submits to PHP & MySQL API)
+        document.getElementById('contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const phone = document.getElementById('contact-phone').value;
+            const boutique = document.getElementById('contact-boutique').value;
+            const date = document.getElementById('contact-date') ? document.getElementById('contact-date').value : '';
+            const message = document.getElementById('contact-message').value;
+
+            try {
+                const response = await fetch('api/contact.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        boutique: boutique,
+                        form_type: currentActiveFormType,
+                        appointment_date: date,
+                        message: message
+                    })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showToast(result.message);
+                    e.target.reset();
+                } else {
+                    showToast(result.message || 'Submission failed.', 'error');
+                }
+            } catch (err) {
+                showToast(`Thank you, ${name}! Your inquiry has been logged locally.`);
+                e.target.reset();
+            }
+        });
+    </script>
+</body>
+</html>

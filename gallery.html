@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lookbook & Runway Gallery | NF Collections Nigeria</title>
+    <meta name="description" content="View the NF Collections Nigeria editorial lookbook, Lagos & West African fashion week runway highlights, and behind-the-scenes atelier craftsmanship.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+    <!-- SITE HEADER -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-logo">
+                NF Collections <span>Nigeria</span>
+            </a>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="products.html" class="nav-link">Collections</a>
+                <a href="gallery.html" class="nav-link active">Lookbook</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <select class="currency-select" id="currencySelect" aria-label="Select Currency">
+                    <option value="NGN">₦ NGN</option>
+                    <option value="USD">$ USD</option>
+                    <option value="GBP">£ GBP</option>
+                    <option value="EUR">€ EUR</option>
+                </select>
+
+                <button class="icon-btn" onclick="openOrderTracker()" aria-label="Track Order" title="Track Live Order">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                </button>
+
+                <div class="user-menu-wrapper">
+                    <button class="user-badge-btn" onclick="openAuthModal('login')" aria-label="Sign In">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Sign In / Register</span>
+                    </button>
+                </div>
+
+                <button class="icon-btn cart-trigger" aria-label="Shopping Bag">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-badge">0</span>
+                </button>
+
+                <button class="mobile-toggle" aria-label="Toggle Navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-drawer">
+        <div class="mobile-drawer-header">
+            <a href="index.html" class="brand-logo">NF Collections</a>
+            <button class="close-btn mobile-drawer-close">✕</button>
+        </div>
+        <nav class="mobile-nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="products.html">Collections</a>
+            <a href="gallery.html">Lookbook</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="javascript:void(0)" onclick="openAuthModal('login')">Sign In / Register 👤</a>
+        </nav>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-header-title">Runway & Editorial Lookbook</h1>
+            <div class="page-breadcrumb">
+                <a href="index.html">Home</a> / <span>Gallery & Lookbook</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY MAIN SECTION -->
+    <section class="section container">
+        <!-- FILTER TABS -->
+        <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 3.5rem; flex-wrap: wrap;">
+            <button class="filter-btn gallery-filter-btn active" data-category="All">All Photography</button>
+            <button class="filter-btn gallery-filter-btn" data-category="Runway">Runway Shows</button>
+            <button class="filter-btn gallery-filter-btn" data-category="Campaign">Editorial Campaigns</button>
+            <button class="filter-btn gallery-filter-btn" data-category="Atelier">Atelier Craftsmanship</button>
+        </div>
+
+        <!-- GALLERY GRID -->
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Rendered dynamically by js/gallery.js -->
+        </div>
+    </section>
+
+    <!-- SHOPPING BAG DRAWER MODAL -->
+    <div class="drawer-backdrop" onclick="toggleCartDrawer(false)"></div>
+    <div class="cart-drawer">
+        <div class="cart-header">
+            <h3 class="cart-title">Your Shopping Bag</h3>
+            <button class="close-btn" onclick="toggleCartDrawer(false)">✕</button>
+        </div>
+        <div class="cart-body" id="cart-body"></div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cart-total">₦0</span>
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;" onclick="checkoutOrder()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- SITE FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="brand-logo">NF Collections <span>Nigeria</span></a>
+                    <p>Nigerian haute couture atelier dedicated to sustainable elegance, flawless tailoring, and architectural minimalism.</p>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Navigation</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="about.html">About Us</a>
+                        <a href="products.html">Collections</a>
+                        <a href="gallery.html">Lookbook</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Atelier Services</h4>
+                    <div class="footer-links">
+                        <a href="contact.html">Private Styling</a>
+                        <a href="contact.html">Bespoke Fitting</a>
+                        <a href="contact.html">Garment Care</a>
+                        <a href="admin.html" style="color: var(--color-gold);">Atelier Admin Portal 🔒</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-col-title">Newsletter</h4>
+                    <form class="newsletter-form">
+                        <div class="newsletter-input-group">
+                            <input type="email" class="newsletter-input" placeholder="Your email address..." required>
+                            <button type="submit" class="newsletter-btn">Join</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 NF Collections Nigeria. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/gallery.js"></script>
+</body>
+</html>
