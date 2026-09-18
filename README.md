@@ -3,7 +3,7 @@
 > **Course Final Project:** Digital Presence Website Development  
 > **Brand Name:** NF Collections Nigeria (High-Fashion Haute Couture & Sustainable Atelier)  
 > **Live Website (Vercel):** *[Insert Vercel URL Here]*  
-> **GitHub Repository:** *[Insert GitHub Repo URL Here]*  
+> **GitHub Repository:** https://github.com/Emkay5/Web-Assessment.git  
 
 ---
 
